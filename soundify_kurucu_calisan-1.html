@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Soundify — Kurucu</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}.app{display:flex;min-height:100vh;padding-bottom:90px}.side{width:230px;background:#050505;padding:24px 14px}.logo{font-size:25px;font-weight:800;margin:0 12px 30px}.logo b{color:#1ed760}.nav button,.pl{width:100%;display:block;border:0;background:none;color:#aaa;text-align:left;padding:12px;border-radius:7px;font-weight:700;cursor:pointer}.nav button:hover,.nav .on,.pl:hover{background:#1b1b1b;color:#fff}.pl{font-weight:500}.main{flex:1;min-width:0;background:linear-gradient(#202020,#101010 330px)}.top{height:72px;display:flex;align-items:center;gap:10px;padding:0 28px;background:#151515dd;position:sticky;top:0;z-index:5}.circle{width:35px;height:35px;border:0;border-radius:50%;background:#080808;color:#fff;font-size:20px}.search{width:min(500px,60vw);border:0;border-radius:25px;padding:13px 18px;outline:0}.user{margin-left:auto;background:#000;padding:9px 15px;border-radius:20px;font-size:13px}.content{padding:28px}.hero{display:flex;align-items:center;gap:24px;background:#181818;padding:25px;border-radius:12px}.heroart{width:145px;height:145px;border-radius:8px;background:linear-gradient(135deg,#1ed760,#087f3d);display:grid;place-items:center;font-size:60px}.hero h1{margin:5px 0}.green{border:0;background:#1ed760;padding:12px 22px;border-radius:25px;font-weight:bold;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:17px}.card{background:#171717;padding:14px;border-radius:8px;cursor:pointer}.card:hover{background:#252525}.cover{aspect-ratio:1;border-radius:6px;display:grid;place-items:center;font-size:42px;margin-bottom:12px;background:linear-gradient(135deg,#4776e6,#8e54e9);overflow:hidden}.cover img{width:100%;height:100%;object-fit:cover}.card b,.card span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card span{color:#aaa;font-size:13px;margin-top:5px}.row{display:grid;grid-template-columns:40px 1fr 1fr 90px;gap:10px;align-items:center;padding:9px;border-radius:5px;cursor:pointer}.row:hover{background:#252525}.song{display:flex;gap:12px;align-items:center;min-width:0}.mini{width:45px;height:45px;border-radius:4px;object-fit:cover;background:#222}.song div:last-child{min-width:0}.song b,.song span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.song span,.album{font-size:13px;color:#aaa}.heart{border:0;background:none;color:#aaa;font-size:19px;cursor:pointer}.heart.on{color:#1ed760}.listen{border:0;background:#1ed760;color:#000;border-radius:18px;padding:7px 12px;font-weight:bold;cursor:pointer}.player{position:fixed;left:0;right:0;bottom:0;height:90px;background:#181818;border-top:1px solid #292929;display:grid;grid-template-columns:1fr 1.4fr 1fr;align-items:center;padding:10px 20px;z-index:10}.now{display:flex;align-items:center;gap:11px;min-width:0}.nowart{width:55px;height:55px;border-radius:4px;object-fit:cover;background:#222}.nowtxt{min-width:0}.nowtxt b,.nowtxt span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nowtxt span{color:#aaa;font-size:12px;margin-top:4px}.controls{text-align:center}.buttons{display:flex;justify-content:center;align-items:center;gap:20px}.buttons button{border:0;background:none;color:#ddd;font-size:18px;cursor:pointer}.play{width:36px;height:36px;border-radius:50%;background:#fff!important;color:#000!important}.bar{display:flex;align-items:center;gap:8px}.bar small{color:#aaa;width:32px}.bar input{width:100%;accent-color:#fff}.vol{display:flex;justify-content:flex-end;gap:8px}.vol input{accent-color:#fff}.status{color:#aaa;margin:10px 0 18px}.empty{color:#aaa;padding:30px 0}.note{background:#252525;border-radius:8px;padding:12px;color:#bbb;font-size:13px;margin-top:18px}
+@media(max-width:750px){.side{display:none}.top{padding:0 14px}.content{padding:18px}.heroart{width:100px;height:100px}.player{grid-template-columns:1fr;height:78px}.vol{display:none}.album{display:none}.row{grid-template-columns:28px 1fr 78px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+<div class="logo">♫ <b>Soundify</b></div>
+<div class="nav">
+<button class="on" onclick="home()">⌂ &nbsp; Ana Sayfa</button>
+<button onclick="document.getElementById('search').focus()">⌕ &nbsp; Ara</button>
+<button onclick="likedPage()">♡ &nbsp; Beğenilenler</button>
+</div>
+<p style="color:#777;font-size:11px;font-weight:bold;margin:28px 12px 8px">ÇALMA LİSTELERİN</p>
+<div class="pl">+ Yeni Çalma Listesi</div><div class="pl">🌙 Gece Sürüşü</div><div class="pl">🔥 Favoriler</div>
+</aside>
+<main class="main">
+<header class="top"><button class="circle">‹</button><button class="circle">›</button><input id="search" class="search" placeholder="Sanatçı veya şarkı ara..." oninput="find()"><div class="user">👑 Kurucu</div></header>
+<section class="content" id="content"></section>
+</main></div>
+<div class="player">
+<div class="now"><img id="nowart" class="nowart"><div class="nowtxt"><b id="title">Bir şarkı seç</b><span id="artist">Soundify</span></div><button class="heart" id="nowheart" onclick="likeCurrent()">♡</button></div>
+<div class="controls"><div class="buttons"><button onclick="prev()">↶</button><button class="play" id="play" onclick="toggle()">▶</button><button onclick="next()">↷</button></div><div class="bar"><small id="time">0:00</small><input id="range" type="range" min="0" max="100" value="0"><small id="dur">0:00</small></div></div>
+<div class="vol">🔊 <input id="volume" type="range" min="0" max="100" value="80"></div>
+</div>
+<audio id="audio" preload="metadata"></audio>
+
+<script>
+const audio=document.getElementById("audio"),search=document.getElementById("search"),content=document.getElementById("content");
+let results=[],cur=0,playing=false,liked=new Set(),searchTimer;
+
+function home(){
+content.innerHTML=`<div class="hero"><div class="heroart">♫</div><div><small>HOŞ GELDİN KURUCU</small><h1>Soundify</h1><p style="color:#aaa">Gerçek sanatçı ve şarkıları ara, kullanılabilir önizlemeleri dinle.</p><button class="green" onclick="search.focus()">⌕ Aramaya başla</button></div></div><h2>Nasıl çalışıyor?</h2><p class="status">Arama kutusuna UZI, Chavo veya “Aslan Yakışmaz Kafeste” yaz. Sonuçlardan ▶ Dinle'ye bas.</p><div class="note">🎧 Not: Telif nedeniyle tam şarkı yerine müzik servisinin sunduğu kısa önizlemeler oynatılır.</div>`;
+}
+
+function find(){
+let q=search.value.trim(); clearTimeout(searchTimer);
+if(!q){home();return}
+content.innerHTML=`<h2>“${esc(q)}” aranıyor…</h2><div class="status">Gerçek müzik kataloğunda aranıyor.</div>`;
+searchTimer=setTimeout(()=>api(q),450);
+}
+
+/* JSONP kullanılıyor: file:// / content:// olarak açıldığında bile normal fetch/CORS engeline takılmaması için. */
+function api(q){
+const cb="soundifyCallback_"+Date.now();
+window[cb]=function(data){
+try{
+results=(data&&data.data)||[];
+if(!results.length){content.innerHTML='<h2>Arama sonuçları</h2><div class="empty">Sonuç bulunamadı.</div>';return}
+content.innerHTML='<h2>Arama sonuçları</h2><div class="list">'+results.map((s,i)=>row(s,i)).join("")+'</div><div class="note">🎵 ▶ Dinle ile mevcut önizlemeyi açabilirsin.</div>';
+}catch(e){fail()}
+finally{delete window[cb];const x=document.getElementById(cb);if(x)x.remove()}
+};
+const script=document.createElement("script");
+script.id=cb;script.onerror=fail;
+script.src="https://api.deezer.com/search?q="+encodeURIComponent(q)+"&output=jsonp&callback="+cb;
+document.body.appendChild(script);
+function fail(){content.innerHTML='<div class="empty">Arama servisine ulaşılamadı. Bu sayfayı Chrome/Edge gibi güncel bir tarayıcıda ve internet açıkken yeniden dene.</div>'}
+}
+
+function row(s,i){
+let img=s.album?.cover_medium||"";
+return `<div class="row">
+<div>${i+1}</div>
+<div class="song" onclick="playSong(${i})"><img class="mini" src="${img}" onerror="this.style.display='none'"><div><b>${esc(s.title)}</b><span>${esc(s.artist.name)}</span></div></div>
+<div class="album">${esc(s.album.title)}</div>
+<div><button class="listen" onclick="playSong(${i})">▶ Dinle</button></div>
+</div>`;
+}
+
+function playSong(i){
+let s=results[i];if(!s)return;
+cur=i;title.textContent=s.title;artist.textContent=s.artist.name;
+nowart.src=s.album?.cover_medium||"";
+nowheart.textContent=liked.has(i)?"♥":"♡";nowheart.classList.toggle("on",liked.has(i));
+if(s.preview){
+audio.src=s.preview;audio.currentTime=0;
+audio.play().then(()=>{playing=true;play.textContent="Ⅱ"}).catch(()=>{playing=false;play.textContent="▶"});
+}else{playing=false;play.textContent="▶"}
+}
+
+function toggle(){
+if(!audio.src)return;
+if(audio.paused){audio.play();playing=true}else{audio.pause();playing=false}
+play.textContent=playing?"Ⅱ":"▶";
+}
+function next(){if(results.length)playSong((cur+1)%results.length)}
+function prev(){if(results.length)playSong((cur-1+results.length)%results.length)}
+function like(i){liked.has(i)?liked.delete(i):liked.add(i);if(results[i]){nowheart.textContent=liked.has(i)?"♥":"♡";nowheart.classList.toggle("on",liked.has(i))}}
+function likeCurrent(){if(results.length)like(cur)}
+function likedPage(){content.innerHTML='<h2>Beğenilenler</h2><div class="empty">Beğendiğin sonuçlar bu oturumda burada tutulur.</div>'}
+audio.addEventListener("timeupdate",()=>{if(audio.duration){range.value=audio.currentTime/audio.duration*100;time.textContent=fmt(audio.currentTime);dur.textContent=fmt(audio.duration)}})
+audio.addEventListener("loadedmetadata",()=>dur.textContent=fmt(audio.duration));
+audio.addEventListener("ended",next);
+range.oninput=()=>{if(audio.duration)audio.currentTime=range.value/100*audio.duration};
+volume.oninput=()=>audio.volume=volume.value/100;
+function fmt(x){return Math.floor(x/60)+":"+String(Math.floor(x%60)).padStart(2,"0")}
+function esc(x){return String(x).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+audio.volume=.8;home();
+</script>
+</body>
+</html>
